@@ -3,24 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using OpenAI_API;
 using System.Threading.Tasks;
+using UnityEngine.UI;
+using TMPro;
 using System;
 
 public class OpenAI_Test : MonoBehaviour
 {
-    string apiKeys = "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";
-    public async
-    void start()
+    private string m_apyKey = "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";
+    public TextMeshProUGUI YourInput;
+    //public TMP_InputField YourInputField;
+    public Image Neutre;
+    public Image Heureux;
+    public Image Malheureux;
+    private void Start()
     {
-        var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
+        //var task = StartAsync();
+        Heureux.enabled = false;
+        Malheureux.enabled = false;
+    }
+    public async Task StartAsync()
+    {
+        string iBriefing = new string("Is the sentence " + "\"" + YourInput.text + "\"" + " positive? Answer by YES or NO: ");
 
-        var result = await api.Completions.CreateCompletionAsync("One Two Three One Two", temperature: 0.1);
-        Console.WriteLine(result.ToString());
-        Debug.Log(result.ToString());
+        var api = new OpenAIAPI(m_apyKey, new Engine ("text-davinci-001"));
+        var result = await api.Completions.CreateCompletionAsync(iBriefing, max_tokens: 100, temperature: 0.1f, top_p: 0f); ;
+        print(result);
+
+        if (result.ToString() == "Yes")
+        {
+            Neutre.enabled = false;
+            Heureux.enabled = true;
+            Malheureux.enabled = false;
+            Debug.Log("cool");
+        }
+        else
+        {
+            Neutre.enabled = false;
+            Heureux.enabled = false;
+            Malheureux.enabled = true;
+            Debug.Log("pas cool");
+        }
+    }
+    
+    public void Reload(string text)
+    {
+        var task = StartAsync();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
