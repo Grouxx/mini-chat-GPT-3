@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.ComponentModel;
 
 public class OpenAI_Test : MonoBehaviour
 {
@@ -27,21 +28,28 @@ public class OpenAI_Test : MonoBehaviour
 
         var api = new OpenAIAPI(m_apyKey, new Engine ("text-davinci-001"));
         var result = await api.Completions.CreateCompletionAsync(iBriefing, max_tokens: 100, temperature: 0.1f, top_p: 0f); ;
-        print(result);
+        print("\"" + result + "\"");
 
-        if (result.ToString() == "Yes")
+        if (result.ToString().Contains("Yes"))
         {
             Neutre.enabled = false;
             Heureux.enabled = true;
             Malheureux.enabled = false;
             Debug.Log("cool");
         }
-        else
+        else if (result.ToString().Contains("No"))
         {
             Neutre.enabled = false;
             Heureux.enabled = false;
             Malheureux.enabled = true;
             Debug.Log("pas cool");
+        }
+        else
+        {
+            Neutre.enabled = true;
+            Heureux.enabled = false;
+            Malheureux.enabled = false;
+            Debug.Log("erreur");
         }
     }
     
