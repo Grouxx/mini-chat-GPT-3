@@ -21,7 +21,7 @@ public class OpenAI_Chat : MonoBehaviour
         string iBriefing = new string("Is the sentence " + "\"" + YourInput.text + "\"" + " positive? Answer by YES or NO: ");
 
         var api = new OpenAIAPI(m_apyKey, new Engine("text-davinci-001"));
-        var result = await api.Completions.CreateCompletionAsync(iBriefing, max_tokens: 100, temperature: 0.1f, top_p: 0f); ;
+        var result = await api.Completions.CreateCompletionAsync(iBriefing, max_tokens: 100, temperature: 0.1f, top_p: 0f);
 
         if (result.ToString().Contains("Yes"))
         {
